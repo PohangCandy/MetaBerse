@@ -10,13 +10,15 @@ public class PlayerController : MonoBehaviour
 {
 
     Camera _camera;
-    CharacterController _controller;
+    public CharacterController _controller;
 
     public float speed = 5f; //이동속력
     public float runSpeed = 8f;
+    public float BoostSpeed = 1000f;
     public float finalSpeed;
     public bool toggleCameraRotation;
     public bool run;
+    public Rigidbody rigid;
 
     public float smoothness = 10f;
 
@@ -27,8 +29,8 @@ public class PlayerController : MonoBehaviour
     {
 
         _camera = Camera.main;
-        _controller = GetComponent<CharacterController>(); 
-
+        _controller = GetComponent<CharacterController>();
+        rigid = GetComponent<Rigidbody>();
     }
 
 
@@ -86,6 +88,32 @@ public class PlayerController : MonoBehaviour
         Vector3 moveDirection = forward * Input.GetAxisRaw("Vertical") + right * Input.GetAxis("Horizontal");
 
         _controller.Move(moveDirection.normalized * finalSpeed * Time.deltaTime);
+    }
+
+    public void Boost()
+    {
+        Debug.Log("on!");
+        Vector3 forward = transform.TransformDirection(Vector3.forward);
+        Vector3 right = transform.TransformDirection(Vector3.right);
+
+        Vector3 moveDirection = forward * Input.GetAxisRaw("Vertical") + right * Input.GetAxis("Horizontal");
+
+        _controller.Move(moveDirection.normalized * BoostSpeed * Time.deltaTime);
+        StartCoroutine(SpeedUp());
+        StartCoroutine(SpeedDown());
+    }
+
+    IEnumerator SpeedUp()
+    {
+        yield return new WaitForSeconds(0.2f);
+
+        speed += 10;
+    }
+    IEnumerator SpeedDown()
+    {
+        yield return new WaitForSeconds(10.0f);
+
+        speed -= 10;
     }
 
 }
