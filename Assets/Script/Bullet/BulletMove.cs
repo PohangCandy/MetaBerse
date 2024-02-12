@@ -36,7 +36,7 @@ public class BulletMove : MonoBehaviour
 
         {
 
-            Player player = other.GetComponent<Player>(); //충돌한 상대방 게임오브젝트로부터 Player컴포넌트 가져오기
+            PlayerController player = other.GetComponent<PlayerController>(); //충돌한 상대방 게임오브젝트로부터 Player컴포넌트 가져오기
 
             if (player != null)
 
